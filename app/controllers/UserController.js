@@ -9,6 +9,21 @@ module.exports = {
     return response.json(users);
   },
 
+  async show(request, response, next) {
+    const { id } = request.params;
+
+    if( !Number.isInteger(parseInt(id)) ) {
+      return response.status(400).send({"msg": "ID parameter need to be an integer."});
+    }
+
+    const user = await User.findByPk(id);
+    if( user !== null ) {
+      return response.status(200).send(user);
+    }
+
+    return response.status(404).send({"msg": "User not found"});
+  },
+
   async store(request, response, next) {
     const { name, email, password } = request.body;
     
@@ -36,7 +51,7 @@ module.exports = {
   },
 
   async delete(request, response) {
-    let { id } = request.params;
+    const { id } = request.params;
     
     if( !Number.isInteger(parseInt(id)) ) {
       return response.status(400).send({"msg": "ID parameter need to be an integer."});
