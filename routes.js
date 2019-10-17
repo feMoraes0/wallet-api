@@ -1,14 +1,8 @@
 const express = require('express');
+const UserController = require('./app/controllers/UserController');
 
 const routes = express.Router();
 
-routes.get('/', (request, response, next) => {
-  console.log(request.body);
-  response
-    .status(200)
-    .send({
-      'success': true
-    });
-});
+routes.get('/', UserController.store);
 
 module.exports = routes;
