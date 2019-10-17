@@ -47,10 +47,43 @@ module.exports = {
   },
 
   async update(request, response) {
-    return false;
+    const { id } = request.params;
+    const { name, email } = request.body;
+
+    if( !Number.isInteger(parseInt(id)) ) {
+      return response.status(400).send({"msg": "ID parameter need to be an integer"});
+    }
+
+    if( name == null || email == null ) {
+      return response.status(400).send({"msg": "name and email are required."});
+    }
+
+    if( name == "" || email == "" ) {
+      return response.status(400).send({"msg": "empty field are not accepted"});
+    }
+
+    const user = await User.findByPk(id);
+
+    if( user !== null ) {
+      const updated = await User.update(
+        { name, email },
+        { where: { id: id } }
+      );
+      
+      if(updated == 1) {
+        user.name = name;
+        user.email = email;
+
+        return response.status(200).send(user);
+      }
+
+      return response.status(500).send({"msg": "Internal server error"});
+    }
+
+    return response.status(404).send({"msg": "User not found"});
   },
 
-  async delete(request, response) {
+  async delete(request, response, next) {
     const { id } = request.params;
     
     if( !Number.isInteger(parseInt(id)) ) {
