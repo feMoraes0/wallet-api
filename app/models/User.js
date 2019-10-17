@@ -10,6 +10,9 @@ class User extends Model {
         password: DataTypes.STRING
       },
       {
+        defaultScope: {
+          attributes: { exclude: ['password'] },
+        },
         sequelize
       }
     )
