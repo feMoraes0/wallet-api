@@ -3,7 +3,10 @@ const UserController = require('./app/controllers/UserController');
 
 const routes = express.Router();
 
-routes.get('/user', UserController.index);
+routes.get('/users', UserController.show);
+
 routes.post('/user', UserController.store);
+routes.delete('/user/:id', UserController.delete);
+routes.put('/user/:id', UserController.update);
 
 module.exports = routes;
