@@ -8,6 +8,7 @@ module.exports = {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
+          autoIncrement: true,
           allowNull: false
         },
         name: {
@@ -15,11 +16,11 @@ module.exports = {
           allowNull: false,
         },
         first_color: {
-          type: Sequelize.STRING,
+          type: Sequelize.STRING(6),
           allowNull: false,
         },
         second_color: {
-          type: Sequelize.STRING,
+          type: Sequelize.STRING(6),
           allowNull: false,
         }
       }
