@@ -2,6 +2,7 @@ const Transfer = require('../models/Transfer');
 const Card = require('../models/Card');
 
 module.exports = {
+
   async index(request, response, next) {
     const { user_id, card_id } = request.params;
 
@@ -23,7 +24,9 @@ module.exports = {
 
     return response.status(200).send(transfers);
   },
+
   async show(request, response, next) {},
+  
   async store(request, response, next) {
     const { user_id, card_id } = request.params;
     const { type, quantity } = request.body;
@@ -49,6 +52,9 @@ module.exports = {
     
     return response.status(200).send(transfer);
   },
+  
   async update(request, response, next) {},
+  
   async delete(request, response, next) {},
-}
+
+};
