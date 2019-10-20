@@ -41,7 +41,7 @@ module.exports = {
       password: sha256(password)
     });
 
-    user.password = "secret";
+    user.password = undefined;
 
     return response.status(200).send(user);
   },
