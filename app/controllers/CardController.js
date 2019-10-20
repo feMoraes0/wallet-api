@@ -35,12 +35,13 @@ module.exports = {
   },
   
   async store(request, response, next) {
-    const { user_id, color_id, label, coin, type, initial } = request.body;
+    const { user_id } = request.params;
+    const { color_id, label, coin, type, initial } = request.body;
 
-    if(!user_id || !color_id || !label|| !coin || !type)
+    if(!color_id || !label|| !coin || !type)
       return response.status(400).send({'msg': 'Some required fields are not sent.'});
     
-    if(user_id == '' || color_id == '' || label == '' || coin == '' || type == '')
+    if(color_id == '' || label == '' || coin == '' || type == '')
       return response.status(400).send({'msg': 'Fields can not be empty.'});
     
     const user = await User.findByPk(parseInt(user_id));
@@ -51,7 +52,7 @@ module.exports = {
 
     const card = await Card.create({user_id, color_id, label, coin, type,});
 
-    return response.status(200).send({'card': card});
+    return response.status(200).send(card);
   },
   
   async update(request, response, next) {
