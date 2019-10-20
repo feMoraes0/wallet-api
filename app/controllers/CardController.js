@@ -103,7 +103,26 @@ module.exports = {
   },
   
   async delete(request, response, next) {
-    return response.status(200).send({'msg': 'success'});
+    const { user_id, card_id } = request.params;
+
+    const card = await Card.findOne(
+      {
+        where: {
+          id: card_id,
+          user_id: user_id
+        }
+      }
+    );
+
+    if(!card)
+      return response.status(404).send({'msg': 'Card not found.'});
+    
+    const deleted = await Card.destroy({where: {id: card_id}});
+    
+    if(deleted)
+      return response.status(200).send({'msg': 'Deleted with success.'});
+    
+    return response.status(500).send({'msg': 'Internal server error, try again later.'})
   },
 
 };
