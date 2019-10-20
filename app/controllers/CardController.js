@@ -5,7 +5,16 @@ const Color = require('../models/Color');
 module.exports = {
   
   async index(request, response, next) {
-    return response.status(200).send({'msg': 'success'});
+    const {user_id} = request.params;
+    
+    const user = await User.findByPk(user_id);
+    
+    if(!user)
+      return response.status(404).send({'msg': 'User can not be found.'});
+    
+    const cards = await Card.findAndCountAll({where: {user_id: user_id}});
+    
+    return response.status(200).send(cards);
   },
 
   async show(request, response, next) {
