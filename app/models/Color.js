@@ -10,7 +10,8 @@ class Color extends Model {
         second_color: DataTypes.STRING
       },
       {
-        sequelize
+        sequelize,
+        timestamps: false
       }
     );
   }

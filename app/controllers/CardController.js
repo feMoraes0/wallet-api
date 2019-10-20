@@ -25,8 +25,13 @@ module.exports = {
 
     if(!card)
       return response.status(400).send({'msg': 'Card can not be found'});
-      
-    return response.status(200).send(card);
+
+    const { color_id } = card;
+    const colors = await Color.findOne({
+      where: { id:color_id }
+    });
+
+    return response.status(200).send({'card': card, 'colors': colors});
   },
   
   async store(request, response, next) {
