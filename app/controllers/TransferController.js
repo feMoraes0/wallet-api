@@ -108,6 +108,34 @@ module.exports = {
     return response.status(200).send(transfer);
   },
   
-  async delete(request, response, next) {},
+  async delete(request, response, next) {
+    const { user_id, card_id, transfer_id } = request.params;
+
+    const card = await Card.findOne({
+      where: {
+        id: parseInt(card_id),
+        user_id: parseInt(user_id)
+      }
+    });
+
+    if(!card)
+      return response.status(404).send({'msg': 'Card can not be found.'});
+
+    const transfer = await Transfer.findByPk(parseInt(transfer_id));
+
+    if(!transfer)
+      return response.status(404).send({'msg': 'Trasnfer can not be found.'});
+    
+    const deleted = await Transfer.destroy({
+      where: {
+        id: parseInt(transfer_id)
+      }
+    });
+
+    if(deleted != 1)
+      return response.status(500).send({'msg': 'Internal server error, try again later.'});
+    
+    return response.status(200).send({'msg': 'Deleted with success'});
+  },
 
 };
