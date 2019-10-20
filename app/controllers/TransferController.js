@@ -25,7 +25,26 @@ module.exports = {
     return response.status(200).send(transfers);
   },
 
-  async show(request, response, next) {},
+  async show(request, response, next) {
+    const { user_id, card_id, transfer_id } = request.params;
+
+    const card = await Card.findOne({
+      where: {
+        user_id: parseInt(user_id),
+        id: parseInt(card_id)
+      }
+    });
+
+    if(!card)
+      return response.status(404).send({'msg': 'Card can not be found.'});
+    
+    const transfer = await Transfer.findByPk(transfer_id);
+
+    if(!transfer)
+      return response.status(404).send({'msg': 'Transfer can not be found.'});
+    
+    return response.status(200).send(transfer);
+  },
   
   async store(request, response, next) {
     const { user_id, card_id } = request.params;
