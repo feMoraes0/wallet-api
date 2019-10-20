@@ -4,7 +4,7 @@ const sha256 = require('sha256');
 module.exports = {
 
   async index(request, response, next) {
-    const users = await User.findAll();
+    const users = await User.findAndCountAll();
 
     return response.json(users);
   },

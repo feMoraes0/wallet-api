@@ -6,11 +6,13 @@ const TransferController = require('../controllers/TransferController');
 
 const routes = express.Router();
 
+/* */
+routes.post('/register', UserController.store);
+
 /* USERS */
 routes.get('/users', UserController.index);
 
 routes.get('/user/:id', UserController.show);
-routes.post('/user', UserController.store);
 routes.delete('/user/:id', UserController.delete);
 routes.put('/user/:id', UserController.update);
 
