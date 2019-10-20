@@ -72,7 +72,41 @@ module.exports = {
     return response.status(200).send(transfer);
   },
   
-  async update(request, response, next) {},
+  async update(request, response, next) {
+    const { user_id, card_id, transfer_id } = request.params;
+    const { type, quantity } = request.body;
+
+    if(type != 'deposit' && type != 'draft')
+      return response.status(400).send({'msg': 'Invalid value to field type.'});
+    
+    const card = await Card.findOne({
+      where: {
+        user_id: parseInt(user_id),
+        id: parseInt(card_id)
+      }
+    });
+
+    if(!card)
+      return response.status(404).send({'msg': 'Card can not be found.'});
+    
+    const transfer = await Transfer.findByPk(parseInt(transfer_id));
+
+    if(!transfer)
+      return response.status(404).send({'msg': 'Trasnfer can not be found.'});
+    
+    const updated = await Transfer.update(
+      {type, quantity},
+      {where: {id: parseInt(transfer_id)}}
+    );
+
+    if(updated != 1) 
+      return response.status(500).send({'msg': 'Internal server error, try again later.'});
+    
+    transfer.type = type;
+    transfer.quantity = quantity;
+
+    return response.status(200).send(transfer);
+  },
   
   async delete(request, response, next) {},
 
