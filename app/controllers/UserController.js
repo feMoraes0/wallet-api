@@ -1,7 +1,30 @@
 const User = require('../models/User');
 const sha256 = require('sha256');
+const Auth = require('./AuthController');
 
 module.exports = {
+
+  async login(request, response, next) {
+    const { email, password } = request.body;
+
+    if(email == null || email == '' || password == null || password == '')
+      return response.status(400).send({'msg': 'Email and password are required'})
+    
+    const user = await User.findOne({
+      where: {
+        email,
+        password: sha256(password)
+      },
+    });
+
+    if(!user)
+      return response.status(400).send({'msg': 'Wrong email or password.'});
+    
+    const token = Auth.generate(email);
+
+    return response.status(200).send({user, token});
+
+  },
 
   async index(request, response, next) {
     const users = await User.findAndCountAll();
@@ -43,7 +66,9 @@ module.exports = {
 
     user.password = undefined;
 
-    return response.status(200).send(user);
+    const token = Auth.generate(email);
+
+    return response.status(200).send({user, token});
   },
 
   async update(request, response) {
