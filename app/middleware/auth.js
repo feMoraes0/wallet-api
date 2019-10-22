@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const authConfig = require('../../config/auth.json');
 
 module.exports = {
   verify(request, response, next) {
@@ -19,7 +18,7 @@ module.exports = {
       return response.status(401).send({'msg': 'Token malformatted.'});
 
     
-    jwt.verify(token, authConfig.secret, (error, decode) => {
+    jwt.verify(token, process.env.SECRET_KEY, (error, decode) => {
       if(error)
         return response.status(401).send({'msg': 'Invalid token.'});
       
