@@ -6,7 +6,7 @@ const Card = require('../app/models/Card');
 const Transfer = require('../app/models/Transfer');
 
 const connection = new Sequelize(
-  
+  dbConfig
 );
 
 User.init(connection);
