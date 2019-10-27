@@ -1,22 +1,12 @@
 const Sequelize = require("sequelize");
-
+const dbConfig = require('../config/database');
 const User = require('../app/models/User');
 const Color = require('../app/models/Color');
 const Card = require('../app/models/Card');
 const Transfer = require('../app/models/Transfer');
 
 const connection = new Sequelize(
-  {
-    dialect: process.env.DB_TYPE,
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    define: {
-      timestamps: true,
-      underscored: true,
-    },
-  }
+  
 );
 
 User.init(connection);
