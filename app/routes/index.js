@@ -9,7 +9,7 @@ const AuthMiddleware = require('../middleware/auth');
 const routes = express.Router();
 
 /* EXTERNAL ROUTES - WITHOUT TOKEN */
-routes.get('/login', UserController.login);
+routes.post('/login', UserController.login);
 routes.post('/register', UserController.store);
 
 /* USERS */
